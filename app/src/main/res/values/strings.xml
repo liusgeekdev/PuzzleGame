@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PuzzleGame</string>
+
+    <string name="puzzle_main_type">选择难度：</string>
+    <string name="puzzle_main_type_selected">2 X 2</string>
+    <string name="puzzle_main_steps">步数：</string>
+    <string name="puzzle_main_reset">重        置</string>
+    <string name="puzzle_main_back">返        回</string>
 </resources>
