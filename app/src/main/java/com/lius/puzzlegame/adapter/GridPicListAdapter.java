@@ -44,6 +44,10 @@ public class GridPicListAdapter extends BaseAdapter {
     }
 
     @Override
+    /**
+     * 该方法在每个子项被滚动到屏幕内的时候会被调用
+     * @param convertView 用于将之前加载好的布局进行缓存
+     */
     public View getView(int position, View convertView, ViewGroup arg2) {
         ImageView iv_pic_item = null;
         int density = (int) ScreenUtil.getDeviceDensity(context);
