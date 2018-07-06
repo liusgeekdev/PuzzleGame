@@ -20,12 +20,12 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.imooc.xpuzzle.R;
-import com.imooc.xpuzzle.adapter.GridItemsAdapter;
-import com.imooc.xpuzzle.bean.ItemBean;
-import com.imooc.xpuzzle.util.GameUtil;
-import com.imooc.xpuzzle.util.ImagesUtil;
-import com.imooc.xpuzzle.util.ScreenUtil;
+import com.lius.puzzlegame.R;
+import com.lius.puzzlegame.adapter.GridItemsAdapter;
+import com.lius.puzzlegame.bean.ItemBean;
+import com.lius.puzzlegame.util.GameUtil;
+import com.lius.puzzlegame.util.ImagesUtil;
+import com.lius.puzzlegame.util.ScreenUtil;
 
 import java.io.File;
 import java.util.ArrayList;

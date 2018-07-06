@@ -6,4 +6,6 @@
     <string name="puzzle_main_steps">步数：</string>
     <string name="puzzle_main_reset">重        置</string>
     <string name="puzzle_main_back">返        回</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
