@@ -1,5 +1,7 @@
 package com.lius.puzzlegame.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,15 +11,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -35,7 +37,7 @@ import java.util.List;
  *
  * @author chris
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity implements OnClickListener {
 
     // 返回码：系统图库
     private static final int RESULT_IMAGE = 100;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.xpuzzle_main);
+
         TEMP_IMAGE_PATH =
                 Environment.getExternalStorageDirectory().getPath() +
                         "/temp.png";
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         mGvPicList.setAdapter(new GridPicListAdapter(
                 MainActivity.this, mPicList));
         // Item点击监听
-        mGvPicList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGvPicList.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View view,
@@ -97,43 +100,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
+        /**
+         * 显示难度Type
+         */
+        mTvPuzzleMainTypeSelected.setOnClickListener(
+                new OnClickListener() {
 
-    /**
-     * 初始化Views
-     */
-    private void initViews() {
-        mGvPicList = (GridView) findViewById(
-                R.id.gv_xpuzzle_main_pic_list);
-        // 初始化Bitmap数据
-        mResPicId = new int[]{
-                R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
-                R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
-                R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
-                R.drawable.pic10, R.drawable.pic11, R.drawable.pic12,
-                R.drawable.pic13, R.drawable.pic14,
-                R.drawable.pic15, R.mipmap.ic_launcher};
-        Bitmap[] bitmaps = new Bitmap[mResPicId.length];
-        for (int i = 0; i < bitmaps.length; i++) {
-            bitmaps[i] = BitmapFactory.decodeResource(
-                    getResources(), mResPicId[i]);
-            mPicList.add(bitmaps[i]);
-        }
-        // 显示type
-        mTvPuzzleMainTypeSelected = (TextView) findViewById(
-                R.id.tv_puzzle_main_type_selected);
-        mLayoutInflater = (LayoutInflater) getSystemService(
-                LAYOUT_INFLATER_SERVICE);
-        // mType view
-        mPopupView = mLayoutInflater.inflate(
-                R.layout.xpuzzle_main_type_selected, null);
-        mTvType2 = (TextView) mPopupView.findViewById(R.id.tv_main_type_2);
-        mTvType3 = (TextView) mPopupView.findViewById(R.id.tv_main_type_3);
-        mTvType4 = (TextView) mPopupView.findViewById(R.id.tv_main_type_4);
-        // 监听事件
-        mTvType2.setOnClickListener(this);
-        mTvType3.setOnClickListener(this);
-        mTvType4.setOnClickListener(this);
+                    @Override
+                    public void onClick(View v) {
+                        // 弹出popup window
+                        popupShow(v);
+                    }
+                });
     }
 
     // 显示选择系统图库 相机对话框
@@ -203,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * 显示popup window
      *
@@ -211,14 +188,15 @@ public class MainActivity extends AppCompatActivity {
      */
     private void popupShow(View view) {
         int density = (int) ScreenUtil.getDeviceDensity(this);
-        //显示popup window
-        mPopupWindow = new PopupWindow(mPopupView, 200 * density, 50 * density);
+        // 显示popup window
+        mPopupWindow = new PopupWindow(mPopupView,
+                200 * density, 50 * density);
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
-        //透明背景
-        Drawable transparent = new ColorDrawable(Color.TRANSPARENT);
-        mPopupWindow.setBackgroundDrawable(transparent);
-        //获取位置
+        // 透明背景
+        Drawable transpent = new ColorDrawable(Color.TRANSPARENT);
+        mPopupWindow.setBackgroundDrawable(transpent);
+        // 获取位置
         int[] location = new int[2];
         view.getLocationOnScreen(location);
         mPopupWindow.showAtLocation(
@@ -228,5 +206,65 @@ public class MainActivity extends AppCompatActivity {
                 location[1] + 30 * density);
     }
 
+    /**
+     * 初始化Views
+     */
+    private void initViews() {
+        mGvPicList = (GridView) findViewById(
+                R.id.gv_xpuzzle_main_pic_list);
+        // 初始化Bitmap数据
+        mResPicId = new int[]{
+                R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
+                R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
+                R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
+                R.drawable.pic10, R.drawable.pic11, R.drawable.pic12,
+                R.drawable.pic13, R.drawable.pic14,
+                R.drawable.pic15, R.mipmap.ic_launcher};
+        Bitmap[] bitmaps = new Bitmap[mResPicId.length];
+        for (int i = 0; i < bitmaps.length; i++) {
+            bitmaps[i] = BitmapFactory.decodeResource(
+                    getResources(), mResPicId[i]);
+            mPicList.add(bitmaps[i]);
+        }
+        // 显示type
+        mTvPuzzleMainTypeSelected = (TextView) findViewById(
+                R.id.tv_puzzle_main_type_selected);
+        mLayoutInflater = (LayoutInflater) getSystemService(
+                LAYOUT_INFLATER_SERVICE);
+        // mType view
+        mPopupView = mLayoutInflater.inflate(
+                R.layout.xpuzzle_main_type_selected, null);
+        mTvType2 = (TextView) mPopupView.findViewById(R.id.tv_main_type_2);
+        mTvType3 = (TextView) mPopupView.findViewById(R.id.tv_main_type_3);
+        mTvType4 = (TextView) mPopupView.findViewById(R.id.tv_main_type_4);
+        // 监听事件
+        mTvType2.setOnClickListener(this);
+        mTvType3.setOnClickListener(this);
+        mTvType4.setOnClickListener(this);
+    }
 
+    /**
+     * popup window item点击事件
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            // Type
+            case R.id.tv_main_type_2:
+                mType = 2;
+                mTvPuzzleMainTypeSelected.setText("2 X 2");
+                break;
+            case R.id.tv_main_type_3:
+                mType = 3;
+                mTvPuzzleMainTypeSelected.setText("3 X 3");
+                break;
+            case R.id.tv_main_type_4:
+                mType = 4;
+                mTvPuzzleMainTypeSelected.setText("4 X 4");
+                break;
+            default:
+                break;
+        }
+        mPopupWindow.dismiss();
+    }
 }
